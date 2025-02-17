@@ -168,3 +168,8 @@ window.addEventListener("mousemove", function (event) {
   }
 
 });
+
+document.getElementById("scroll-des").addEventListener("click", function() {
+  document.getElementById("reservation-1").scrollIntoView({ behavior: "smooth" });
+});
+

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Forum&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <style>
         :root {
@@ -16,7 +17,7 @@
         }
         
         [data-theme="dark"] {
-            --bg-color: #1e1e1e;
+            --bg-color: #444242;
             --panel-bg: #333;
             --text-color: #f4f4f4;
             --button-bg: #17a2b8;
@@ -25,7 +26,8 @@
         }
         
         body {
-            font-family: Arial, sans-serif;
+            background-image: url(assets/images/shape-5.png);
+            font-family: 'DM Sans', sans-serif;
             margin: 0;
             padding: 0;
             background-color: var(--bg-color);
@@ -76,13 +78,24 @@
             display: flex;
             justify-content: space-between;
             padding: 20px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 30px;
         }
         .left-panel, .right-panel {
             background: var(--panel-bg);
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 45%;
+        }
+        .left-panel{ width: 40%;}
+        .right-panel { width: 45%;}
+        .reservation-panel{
+            background: var(--panel-bg);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
         }
         h2 {
             margin-bottom: 15px;
@@ -173,21 +186,44 @@
             <h2>Orders Placed</h2>
             <ul id="order-list"></ul>
         </div>
+        <div class="reservation-panel">
+            <h2>Reservations</h2>
+            
+        </div>
     </div>
     <script>
-        function toggleTheme() {
-            const body = document.body;
-            const currentTheme = body.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+       
+    function toggleTheme() {
+        const body = document.body;
+        const currentTheme = body.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        
             body.setAttribute('data-theme', newTheme);
+                
+            localStorage.setItem('theme', newTheme);
+    }
+
+    function loadTheme() {
+        const savedTheme = localStorage.getItem('theme');
+            
+        if (savedTheme) {
+            document.body.setAttribute('data-theme', savedTheme);
         }
-        function showTooltip() {
-            const tooltip = document.getElementById('tooltip');
-            tooltip.style.display = 'block';
-            setTimeout(() => {
-                tooltip.style.display = 'none';
-            }, 3000);
-        }
+    }
+
+        
+    window.onload = function () {
+        loadTheme();
+        showTooltip();
+    };
+
+    function showTooltip() {
+        const tooltip = document.getElementById('tooltip');
+        tooltip.style.display = 'block';
+        setTimeout(() => {
+            tooltip.style.display = 'none';
+        }, 1000);
+    }
     </script>
 </body>
 </html>
