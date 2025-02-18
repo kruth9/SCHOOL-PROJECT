@@ -237,7 +237,7 @@
         </div>
         <div class="menu-container" id="menuItems">
             <div class="menu-item">
-                <img src="greek-salad.jpg" alt="Greek Salad">
+                <!-- <img src="greek-salad.jpg" alt="Greek Salad">
                 <div>
                     <h3>Greek Salad</h3>
                     <p>Tomatoes, cucumber, onions, olives, feta cheese</p>
@@ -252,40 +252,47 @@
                     <p>Vegetables, cheese, ground meat, tomato sauce</p>
                 </div>
                 <span>$40.00</span>
-                <button class="order-button">Order</button>
+                <button class="order-button">Order</button> -->
             </div>
         </div>
         <script>
-            function showCategory(category) {
-                document.getElementById('menuItems').innerHTML = "<p>Loading " + category + "...</p>";
-                setTimeout(() => {
-                    if (category === 'breakfast') {
-                        document.getElementById('menuItems').innerHTML = `
-                            <div class="menu-item">
-                                <img src="pancakes.jpg" alt="Pancakes">
-                                <div><h3>Pancakes</h3><p>Fluffy pancakes with syrup</p></div>
-                                <span>$15.00</span>
-                                <button class="order-button">Order</button>
-                            </div>`;
-                    } else if (category === 'appetizers') {
-                        document.getElementById('menuItems').innerHTML = `
-                            <div class="menu-item">
-                                <img src="bruschetta.jpg" alt="Bruschetta">
-                                <div><h3>Bruschetta</h3><p>Toasted bread with tomatoes</p></div>
-                                <span>$12.00</span>
-                                <button class="order-button">Order</button>
-                            </div>`;
-                    } else if (category === 'drinks') {
-                        document.getElementById('menuItems').innerHTML = `
-                            <div class="menu-item">
-                                <img src="cocktail.jpg" alt="Cocktail">
-                                <div><h3>Cocktail</h3><p>Refreshing fruit cocktail</p></div>
-                                <span>$10.00</span>
-                                <button class="order-button">Order</button>
-                            </div>`;
-                    }
-                }, 500);
+            var toShowItems = [];
+            var orders = [];
+            console.log("menu");
+            items = JSON.parse(localStorage.getItem("items"));
+            console.log(items);
+
+            function ordered(i){
+              orders.push(i); 
+              // console.log('ordered' + JSON.stringify(i));
+              localStorage.setItem("orders", JSON.stringify(orders))
             }
+
+            function showCategory(category) {
+                menuItemObj = document.getElementById('menuItems')
+                menuItemObj.innerHTML = "<p>Loading " + category + "...</p>";
+                setTimeout(() => {
+                if (items == null){
+                  menuItemObj.innerHTML = "Empty T-T"
+                  return
+                }
+
+                menuItemObj.innerHTML = "";
+                for (i of items){
+                  if (category == i.category){
+                    toShowItems.push(i);
+                    menuItemObj.innerHTML += `
+                            <div class="menu-item">
+                                <div><h3>${i.title}</h3><p>${i.description}</p></div>
+                                <span>${i.price}</span>
+                                <button class="order-button" onclick=ordered(${JSON.stringify(i)})>Order</button>
+                            </div>`;
+                  }
+                }
+              }, 500);
+              
+            }
+            showCategory('breakfast');
         </script>
     </div>
 </body>
