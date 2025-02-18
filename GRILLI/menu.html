@@ -7,6 +7,7 @@
     <meta name="title" content="Grilli - Amazing & Delicious Food">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Forum&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./assets/css/style.css">
     <style>
         body {
             background-color: #121212;
@@ -77,10 +78,121 @@
             font-weight: bold;
             border-bottom: 2px solid #c79c60;
         }
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease, visibility 0.3s;
+        }
+        .popup {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+        .popup img {
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke: green;
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 30;
+            stroke-dashoffset: 30;
+            animation: draw 0.5s forwards ease-out;
+        }
+        @keyframes draw {
+            from {
+                stroke-dashoffset: 30;
+            }
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+        .popup-overlay.active {
+            visibility: visible;
+            opacity: 1;
+            color: #121212;
+        }
+        .popup-overlay.active .popup {
+            transform: scale(1);
+        }
+        .btn-pop {
+            padding: 10px 20px;
+            background: blue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .close-btn {
+            margin-top: 10px;
+            margin-left: 40%;
+            background: red;
+        }
+        .cart-container {
+            position: fixed;
+            top: 30%;
+            right: 0;
+            width: 300px;
+            background-color: rgba(34, 34, 34, 0.8);
+            padding: 20px;
+            border-radius: 10px 0 0 10px;
+            color: white;
+            box-shadow: -3px 5px 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
 
-        
+        .cart-container h2 {
+            margin-bottom: 15px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .cart-item span {
+            font-size: 16px;
+        }
+
+        .cart-item strong {
+            font-weight: bold;
+        }
+
+        .place-order-button {
+            background-color: #c79c60;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            color: white;
+            font-size: 16px;
+            border-radius: 8px;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .place-order-button:hover {
+            background-color: #a88f59;
+        }
+
     </style>
-    <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 <body>
     <div class="topbar">
@@ -227,16 +339,18 @@
         </div>
     </header>
 
+    
     <div class="menu-table-main" style="background: url('assets/images/shape-6.png'); height: 100vh;">
-      
         <h1>Delicious Menu</h1>
+        <p class="section-subtitle text-center label-2">Special Selection</p>
         <div class="category-selector">
             <button onclick="showCategory('breakfast')">Breakfast</button>
             <button onclick="showCategory('appetizers')">Appetizers</button>
             <button onclick="showCategory('drinks')">Drinks</button>
         </div>
+
         <div class="menu-container" id="menuItems">
-            <div class="menu-item">
+            <div class="menu-item" data-name="Greek Salad" data-price="25.50">
                 <img src="greek-salad.jpg" alt="Greek Salad">
                 <div>
                     <h3>Greek Salad</h3>
@@ -245,7 +359,8 @@
                 <span>$25.50</span>
                 <button class="order-button">Order</button>
             </div>
-            <div class="menu-item">
+
+            <div class="menu-item" data-name="Lasagna" data-price="40.00">
                 <img src="lasagna.jpg" alt="Lasagna">
                 <div>
                     <h3>Lasagna</h3>
@@ -255,38 +370,102 @@
                 <button class="order-button">Order</button>
             </div>
         </div>
-        <script>
-            function showCategory(category) {
-                document.getElementById('menuItems').innerHTML = "<p>Loading " + category + "...</p>";
-                setTimeout(() => {
-                    if (category === 'breakfast') {
-                        document.getElementById('menuItems').innerHTML = `
-                            <div class="menu-item">
-                                <img src="pancakes.jpg" alt="Pancakes">
-                                <div><h3>Pancakes</h3><p>Fluffy pancakes with syrup</p></div>
-                                <span>$15.00</span>
-                                <button class="order-button">Order</button>
-                            </div>`;
-                    } else if (category === 'appetizers') {
-                        document.getElementById('menuItems').innerHTML = `
-                            <div class="menu-item">
-                                <img src="bruschetta.jpg" alt="Bruschetta">
-                                <div><h3>Bruschetta</h3><p>Toasted bread with tomatoes</p></div>
-                                <span>$12.00</span>
-                                <button class="order-button">Order</button>
-                            </div>`;
-                    } else if (category === 'drinks') {
-                        document.getElementById('menuItems').innerHTML = `
-                            <div class="menu-item">
-                                <img src="cocktail.jpg" alt="Cocktail">
-                                <div><h3>Cocktail</h3><p>Refreshing fruit cocktail</p></div>
-                                <span>$10.00</span>
-                                <button class="order-button">Order</button>
-                            </div>`;
-                    }
-                }, 500);
-            }
-        </script>
+
+        <!-- Popup Structure -->
+        <div class="popup-overlay" id="popupOverlay">
+            <div class="popup">
+                <img src="assets/images/tick.gif" alt="Success" width="50" height="50">
+                <p>YOUR ORDER HAS BEEN PLACED!</p>
+                <button class="btn-pop close-btn" onclick="closePopup()">Close</button>
+            </div>        
+        </div>
+
+        <div class="cart-container" id="cartContainer">
+            <h2>Cart</h2>
+            <div id="cart"></div>
+            <button class="place-order-button" onclick="openPopup()">Place Order</button>
+        </div>
     </div>
+
+    <script>
+        let cart = {};
+    
+        function updateCart() {
+            let cartDiv = document.getElementById('cart');
+            cartDiv.innerHTML = '';
+            let totalPrice = 0;
+    
+            for (let item in cart) {
+                let itemTotal = cart[item].quantity * cart[item].price;
+                totalPrice += itemTotal;
+                cartDiv.innerHTML += `<div class='cart-item'>
+                    <span>${item} (${cart[item].quantity})</span>
+                    <span>$${itemTotal.toFixed(2)}</span>
+                </div>`;
+            }
+            cartDiv.innerHTML += `<hr><strong>Total: $${totalPrice.toFixed(2)}</strong>`;
+        }
+    
+        function openPopup() {
+            document.getElementById('popupOverlay').classList.add('active');
+        }
+    
+        function closePopup() {
+            document.getElementById('popupOverlay').classList.remove('active');
+        }
+    
+        function showCategory(category) {
+            document.getElementById('menuItems').innerHTML = "<p>Loading " + category + "...</p>";
+            setTimeout(() => {
+                if (category === 'breakfast') {
+                    document.getElementById('menuItems').innerHTML = `
+                        <div class="menu-item" data-name="Pancakes" data-price="15.00">
+                            <img src="pancakes.jpg" alt="Pancakes">
+                            <div><h3>Pancakes</h3><p>Fluffy pancakes with syrup</p></div>
+                            <span>$15.00</span>
+                            <button class="order-button">Order</button>
+                        </div>`;
+                } else if (category === 'appetizers') {
+                    document.getElementById('menuItems').innerHTML = `
+                        <div class="menu-item" data-name="Bruschetta" data-price="12.00">
+                            <img src="bruschetta.jpg" alt="Bruschetta">
+                            <div><h3>Bruschetta</h3><p>Toasted bread with tomatoes</p></div>
+                            <span>$12.00</span>
+                            <button class="order-button">Order</button>
+                        </div>`;
+                } else if (category === 'drinks') {
+                    document.getElementById('menuItems').innerHTML = `
+                        <div class="menu-item" data-name="Cocktail" data-price="10.00">
+                            <img src="cocktail.jpg" alt="Cocktail">
+                            <div><h3>Cocktail</h3><p>Refreshing fruit cocktail</p></div>
+                            <span>$10.00</span>
+                            <button class="order-button">Order</button>
+                        </div>`;
+                }
+            }, 300);
+        }
+ 
+        document.getElementById('menuItems').addEventListener('click', function (event) {
+            if (event.target && event.target.classList.contains('order-button')) {
+                let item = event.target.parentElement;
+                let itemName = item.getAttribute('data-name');
+                let itemPrice = parseFloat(item.getAttribute('data-price'));
+    
+                if (!cart[itemName]) {
+                    cart[itemName] = { quantity: 0, price: itemPrice };
+                }
+    
+                cart[itemName].quantity++;
+                updateCart();
+
+                console.log(`${itemName} quantity: ${cart[itemName].quantity}`);
+            }
+        });
+    
+        document.addEventListener("DOMContentLoaded", function () {
+            showCategory('breakfast'); 
+        });
+    </script>
+       
 </body>
 </html>
