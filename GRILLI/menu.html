@@ -256,44 +256,105 @@
             </div>
         </div>
         <script>
-            var toShowItems = [];
-            var orders = [];
-            console.log("menu");
-            items = JSON.parse(localStorage.getItem("items"));
-            console.log(items);
-
-            function ordered(i){
-              orders.push(i); 
-              // console.log('ordered' + JSON.stringify(i));
-              localStorage.setItem("orders", JSON.stringify(orders))
-            }
+            var items;
 
             function showCategory(category) {
+                let c;
                 menuItemObj = document.getElementById('menuItems')
                 menuItemObj.innerHTML = "<p>Loading " + category + "...</p>";
+                console.log(items);
                 setTimeout(() => {
+
                 if (items == null){
                   menuItemObj.innerHTML = "Empty T-T"
                   return
                 }
+                
+                  
 
                 menuItemObj.innerHTML = "";
                 for (i of items){
                   if (category == i.category){
-                    toShowItems.push(i);
+                    
+                    console.log(i);
                     menuItemObj.innerHTML += `
-                            <div class="menu-item">
+                            <div class="menu-item" data-name="${i.title}" data-price="${i.price}">
                                 <div><h3>${i.title}</h3><p>${i.description}</p></div>
                                 <span>${i.price}</span>
-                                <button class="order-button" onclick=ordered(${JSON.stringify(i)})>Order</button>
+                                <button class="order-button">Order</button>
                             </div>`;
+                    c++;
                   }
                 }
+                if(c == 0){
+                  menuItemObj.innerHTML = "Empty T-T"
+                }
               }, 500);
+              c = 0;
+            }
+
+            window.onfocus = () => {
+              items = JSON.parse(localStorage.getItem("items"));
+              // console.log(items);
+              showCategory('breakfast');
+              // console.log(items[0]);
               
             }
-            showCategory('breakfast');
         </script>
     </div>
+
+
+    <script>
+        var cart = {};
+    
+        function updateCart() {
+            let cartDiv = document.getElementById('cart');
+            cartDiv.innerHTML = '';
+            let totalPrice = 0;
+    
+            for (let item in cart) {
+                let itemTotal = cart[item].quantity * cart[item].price;
+                totalPrice += itemTotal;
+                cartDiv.innerHTML += `<div class='cart-item'>
+                    <span>${item} (${cart[item].quantity})</span>
+                    <span>$${itemTotal.toFixed(2)}</span>
+                </div>`;
+            }
+            cartDiv.innerHTML += `<hr><strong>Total: $${totalPrice.toFixed(2)}</strong>`;
+        }
+    
+        function openPopup() {
+            document.getElementById('popupOverlay').classList.add('active');
+        }
+    
+        function closePopup() {
+            document.getElementById('popupOverlay').classList.remove('active');
+        }
+
+ 
+        document.getElementById('menuItems').addEventListener('click', function (event) {
+            if (event.target && event.target.classList.contains('order-button')) {
+                let item = event.target.parentElement;
+                let itemName = item.getAttribute('data-name');
+                let itemPrice = parseFloat(item.getAttribute('data-price'));
+    
+                if (!cart[itemName]) {
+                    cart[itemName] = { quantity: 0, price: itemPrice };
+                }
+    
+                cart[itemName].quantity++;
+                updateCart();
+
+                console.log(`${itemName} quantity: ${cart[itemName].quantity}`);
+
+                localStorage.setItem("orders", JSON.stringify(cart))
+            }
+        });
+    
+        document.addEventListener("DOMContentLoaded", function () {
+            showCategory('breakfast'); 
+        });
+    </script>
+       
 </body>
 </html>

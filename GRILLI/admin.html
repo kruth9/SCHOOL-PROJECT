@@ -82,11 +82,12 @@
             flex-wrap: wrap;
             gap: 30px;
         }
-        .left-panel, .right-panel {
+        .left-panel, .right-panel{
             background: var(--panel-bg);
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            min-height: 55vh;
         }
         .left-panel{ width: 40%;}
         .right-panel { width: 45%;}
@@ -184,11 +185,27 @@
         </div>
         <div class="right-panel">
             <h2>Orders Placed</h2>
-            <ul id="order-list"></ul>
+            <table id="order-list">
+                <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </table>
+            
         </div>
         <div class="reservation-panel">
             <h2>Reservations</h2>
-            
+            <table id="reservation-list">
+                <tr>
+                    <th>Name</th>
+                    <th>Phone number</th>
+                    <th>no. of persons</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Message</th>
+                </tr>
+            </table>
         </div>
     </div>
     
@@ -198,25 +215,37 @@
         var orderListObj = document.getElementById("order-list");
         var orders;
         
+
+        
+
+        // for orders
         window.onfocus = () => {
             orders = JSON.parse(localStorage.getItem("orders"));
+            if(orders == null) return
+            orderNames = Object.keys(orders)
             console.log("orders: " + orders);
-            console.log("orders str:", JSON.stringify(orders));
+            console.log("orders str: ", JSON.stringify(orders));
+            console.log("order names: " + orderNames);
 
-            orderListObj.innerHTML = "";
-            for(i of orders){
+            orderListObj.innerHTML = `<tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>`;
+            for(name of orderNames){
                     console.log("focus");
+                    console.log(name);
                 orderListObj.innerHTML += `
-                                <li >   
-                                    <h3>${i.title}</h3><p>${i.description}</p>
-                                    <span>${i.price}</span>
-                                </li>`;
+                                <tr>
+                                    <th>${name}</th>
+                                    <th>${orders[name].quantity}</th>
+                                    <th>Rs ${orders[name].price}</th>
+                                </tr>
+                                `;
             }
 
         };
 
-
-        
 
         
         function placeItem(){
@@ -232,7 +261,6 @@
 
             // console.log(category, title, description, price);
 
-
             let item = {
                 category: "",
                 // imageObj: new Object(),
@@ -240,7 +268,6 @@
                 description: "",
                 price: 0
             }    
-            
             item.category = category
             // item.imageObj = fileObj
             item.title = title
@@ -252,7 +279,37 @@
             console.log(items);
 
         }
-       
+    // for reservations
+    var reservations;
+    var resTable = document.getElementById("reservation-list");
+    var resNames;
+    window.onfocus= () =>{
+        reservations = JSON.parse(localStorage.getItem("reservations"));
+        resNames = Object.keys(reservations);
+        console.log(reservations)
+
+        resTable.innerHTML = `<tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>`;
+
+            for(name of resNames){
+                    console.log(name);
+                resTable.innerHTML += `
+                                <tr>
+                    <th>${name}</th>
+                    <th>${resTable[name].phone}</th>
+                    <th>${resTable[name].reservation-date}</th>
+                    <th>${resTable[name].date}</th>
+                    <th>${resTable[name].time}</th>
+                    <th>${resTable[name].message}</th>
+                </tr>
+                                `;
+            }
+    }
+
+
     function toggleTheme() {
         const body = document.body;
         const currentTheme = body.getAttribute('data-theme');

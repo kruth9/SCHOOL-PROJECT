@@ -173,3 +173,20 @@ document.getElementById("scroll-des").addEventListener("click", function() {
   document.getElementById("reservation-1").scrollIntoView({ behavior: "smooth" });
 });
 
+
+// Reservation form
+var reservations = {};
+const form = document.getElementsByClassName('form-left')[0];
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault(); 
+
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData);
+      reservations[data.name] = data;
+      localStorage.setItem("reservations", JSON.stringify(reservations));
+      console.log('Form submitted:', reservations);
+    })
+
+
+    
