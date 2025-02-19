@@ -176,17 +176,23 @@ document.getElementById("scroll-des").addEventListener("click", function() {
 
 // Reservation form
 var reservations = {};
-const form = document.getElementsByClassName('form-left')[0];
+document.querySelector('.form-left').addEventListener('submit', function (event) {
+  event.preventDefault(); // Prevent the default form submission
 
-    form.addEventListener('submit', function(event) {
-      event.preventDefault(); 
+  // Retrieve form data
+  const formData = {
+      name: document.querySelector('input[name="name"]').value,
+      phone: document.querySelector('input[name="phone"]').value,
+      person: document.querySelector('select[name="person"]').value,
+      reservationDate: document.querySelector('input[name="reservation-date"]').value,
+      time: document.querySelector('select[name="time"]').value,
+      message: document.querySelector('textarea[name="message"]').value,
+  };
+  reservations[formData.name] = formData;
+  console.log('Form Data:', reservations);
+  localStorage.setItem("reservations", JSON.stringify(reservations))
+});
 
-      const formData = new FormData(form);
-      const data = Object.fromEntries(formData);
-      reservations[data.name] = data;
-      localStorage.setItem("reservations", JSON.stringify(reservations));
-      console.log('Form submitted:', reservations);
-    })
 
 
     

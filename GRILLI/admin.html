@@ -283,31 +283,35 @@
     var reservations;
     var resTable = document.getElementById("reservation-list");
     var resNames;
-    window.onfocus= () =>{
+
+
         reservations = JSON.parse(localStorage.getItem("reservations"));
         resNames = Object.keys(reservations);
         console.log(reservations)
 
-        resTable.innerHTML = `<tr>
-                    <th>Item</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                </tr>`;
+        resTable.innerHTML = ` 
+                    <th>Name</th>
+                    <th>Phone number</th>
+                    <th>no. of persons</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Message</th>`;
 
             for(name of resNames){
                     console.log(name);
                 resTable.innerHTML += `
                                 <tr>
                     <th>${name}</th>
-                    <th>${resTable[name].phone}</th>
-                    <th>${resTable[name].reservation-date}</th>
-                    <th>${resTable[name].date}</th>
-                    <th>${resTable[name].time}</th>
-                    <th>${resTable[name].message}</th>
+                    <th>${reservations[name].phone}</th>
+                    <th>${reservations[name].person}</th>
+                    <th>${reservations[name].reservationDate}</th>
+                
+                    <th>${reservations[name].time}</th>
+                    <th>${reservations[name].message}</th>
                 </tr>
                                 `;
             }
-    }
+    
 
 
     function toggleTheme() {
