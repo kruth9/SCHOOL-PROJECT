@@ -196,16 +196,27 @@
         console.log("admin");
         var items = [];
         var orderListObj = document.getElementById("order-list");
-        orders = JSON.parse(localStorage.getItem("orders"));
-        console.log("orders: " + orders);
-        for(i of orders){
-            console.log(JSON.stringify(orders));
-            orderListObj.innerHTML += `
-                            <li >
-                                <h3>${i.title}</h3><p>${i.description}</p>
-                                <span>${i.price}</span>
-                            </li>`;
-        }
+        var orders;
+        
+        window.onfocus = () => {
+            orders = JSON.parse(localStorage.getItem("orders"));
+            console.log("orders: " + orders);
+            console.log("orders str:", JSON.stringify(orders));
+
+            orderListObj.innerHTML = "";
+            for(i of orders){
+                    console.log("focus");
+                orderListObj.innerHTML += `
+                                <li >   
+                                    <h3>${i.title}</h3><p>${i.description}</p>
+                                    <span>${i.price}</span>
+                                </li>`;
+            }
+
+        };
+
+
+        
 
         
         function placeItem(){
