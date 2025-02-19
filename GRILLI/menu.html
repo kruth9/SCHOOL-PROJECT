@@ -192,6 +192,7 @@
             background-color: #a88f59;
         }
 
+      
     </style>
 </head>
 <body>
@@ -414,7 +415,7 @@
                   if (category == i.category){
                     toShowItems.push(i);
                     menuItemObj.innerHTML += `
-                            <div class="menu-item">
+                            <div class="menu-item" data-name="${i.title}" data-price="${i.price}">
                                 <div><h3>${i.title}</h3><p>${i.description}</p></div>
                                 <span>${i.price}</span>
                                 <button class="order-button" onclick=ordered(${JSON.stringify(i)})>Order</button>
@@ -424,7 +425,7 @@
               }, 500);
               
             }
-            showCategory('breakfast');
+
         </script>
 
     </div>
@@ -456,36 +457,36 @@
             document.getElementById('popupOverlay').classList.remove('active');
         }
     
-        function showCategory(category) {
-            document.getElementById('menuItems').innerHTML = "<p>Loading " + category + "...</p>";
-            setTimeout(() => {
-                if (category === 'breakfast') {
-                    document.getElementById('menuItems').innerHTML = `
-                        <div class="menu-item" data-name="Pancakes" data-price="15.00">
-                            <img src="pancakes.jpg" alt="Pancakes">
-                            <div><h3>Pancakes</h3><p>Fluffy pancakes with syrup</p></div>
-                            <span>$15.00</span>
-                            <button class="order-button">Order</button>
-                        </div>`;
-                } else if (category === 'appetizers') {
-                    document.getElementById('menuItems').innerHTML = `
-                        <div class="menu-item" data-name="Bruschetta" data-price="12.00">
-                            <img src="bruschetta.jpg" alt="Bruschetta">
-                            <div><h3>Bruschetta</h3><p>Toasted bread with tomatoes</p></div>
-                            <span>$12.00</span>
-                            <button class="order-button">Order</button>
-                        </div>`;
-                } else if (category === 'drinks') {
-                    document.getElementById('menuItems').innerHTML = `
-                        <div class="menu-item" data-name="Cocktail" data-price="10.00">
-                            <img src="cocktail.jpg" alt="Cocktail">
-                            <div><h3>Cocktail</h3><p>Refreshing fruit cocktail</p></div>
-                            <span>$10.00</span>
-                            <button class="order-button">Order</button>
-                        </div>`;
-                }
-            }, 300);
-        }
+        // function showCategory(category) {
+        //     document.getElementById('menuItems').innerHTML = "<p>Loading " + category + "...</p>";
+        //     setTimeout(() => {
+        //         if (category === 'breakfast') {
+        //             document.getElementById('menuItems').innerHTML = `
+        //                 <div class="menu-item" data-name="Pancakes" data-price="15.00">
+        //                     <img src="pancakes.jpg" alt="Pancakes">
+        //                     <div><h3>Pancakes</h3><p>Fluffy pancakes with syrup</p></div>
+        //                     <span>$15.00</span>
+        //                     <button class="order-button">Order</button>
+        //                 </div>`;
+        //         } else if (category === 'appetizers') {
+        //             document.getElementById('menuItems').innerHTML = `
+        //                 <div class="menu-item" data-name="Bruschetta" data-price="12.00">
+        //                     <img src="bruschetta.jpg" alt="Bruschetta">
+        //                     <div><h3>Bruschetta</h3><p>Toasted bread with tomatoes</p></div>
+        //                     <span>$12.00</span>
+        //                     <button class="order-button">Order</button>
+        //                 </div>`;
+        //         } else if (category === 'drinks') {
+        //             document.getElementById('menuItems').innerHTML = `
+        //                 <div class="menu-item" data-name="Cocktail" data-price="10.00">
+        //                     <img src="cocktail.jpg" alt="Cocktail">
+        //                     <div><h3>Cocktail</h3><p>Refreshing fruit cocktail</p></div>
+        //                     <span>$10.00</span>
+        //                     <button class="order-button">Order</button>
+        //                 </div>`;
+        //         }
+        //     }, 300);
+        // }
  
         document.getElementById('menuItems').addEventListener('click', function (event) {
             if (event.target && event.target.classList.contains('order-button')) {
