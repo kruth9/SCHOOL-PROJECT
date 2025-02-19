@@ -219,7 +219,7 @@
         
 
         // for orders
-        window.onfocus = () => {
+
             orders = JSON.parse(localStorage.getItem("orders"));
             if(orders == null) return
             orderNames = Object.keys(orders)
@@ -244,7 +244,7 @@
                                 `;
             }
 
-        };
+    
 
 
         
