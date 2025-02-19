@@ -188,10 +188,22 @@ document.querySelector('.form-left').addEventListener('submit', function (event)
       time: document.querySelector('select[name="time"]').value,
       message: document.querySelector('textarea[name="message"]').value,
   };
+
+  // Save reservation data to the reservations object
   reservations[formData.name] = formData;
+
+  // Log data (for debugging purposes)
   console.log('Form Data:', reservations);
-  localStorage.setItem("reservations", JSON.stringify(reservations))
+
+  // Store reservation in localStorage
+  localStorage.setItem("reservations", JSON.stringify(reservations));
+
+  // Show a confirmation alert
+  alert('Your table has been booked successfully!');
+
+  document.querySelector('.form-left').reset();
 });
+
 
 
 

@@ -155,9 +155,52 @@
             border-right: 10px solid transparent;
             border-bottom: 10px solid var(--panel-bg);
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--panel-bg);
+            color: var(--text-color);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: var(--button-bg);
+            color: #fff;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        tr:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        td button {
+            padding: 6px 10px;
+            background: var(--button-bg);
+            border: none;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        td button:hover {
+            background: var(--button-hover);
+        }
+
     </style>
 </head>
-<body data-theme="light" onload="showTooltip()">
+<body data-theme="light">
     <div class="admin-header">Admin Panel 
         <div class="theme-toggle-container">
             <div class="theme-toggle" onclick="toggleTheme()"></div>
@@ -173,15 +216,13 @@
                 <option value="drinks">Drinks</option>
                 <option value="breakfast">Breakfast</option>
             </select>
-            <!-- <label for="image">Upload Image:</label>
-            <input type="file" id="image" accept="image/*"> -->
             <label for="title">Title:</label>
             <input type="text" id="title" placeholder="Enter title">
             <label for="description">Description:</label>
             <textarea id="description" placeholder="Enter description"></textarea>
             <label for="price">Price ($):</label>
             <input type="number" id="price" placeholder="Enter price">
-            <button id="place-item" onclick="placeItem()">Place Item</button>
+            <button id="place-item">Place Item</button>
         </div>
         <div class="right-panel">
             <h2>Orders Placed</h2>
@@ -192,7 +233,6 @@
                     <th>Price</th>
                 </tr>
             </table>
-            
         </div>
         <div class="reservation-panel">
             <h2>Reservations</h2>
@@ -200,7 +240,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Phone number</th>
-                    <th>no. of persons</th>
+                    <th>No. of persons</th>
                     <th>Date</th>
                     <th>Time</th>
                     <th>Message</th>
@@ -208,143 +248,136 @@
             </table>
         </div>
     </div>
-    
     <script>
-        console.log("admin");
-        var items = [];
-        var orderListObj = document.getElementById("order-list");
-        var orders;
-        
-
-        
-
-        // for orders
-
-            orders = JSON.parse(localStorage.getItem("orders"));
-            if(orders == null) return
-            orderNames = Object.keys(orders)
-            console.log("orders: " + orders);
-            console.log("orders str: ", JSON.stringify(orders));
-            console.log("order names: " + orderNames);
-
-            orderListObj.innerHTML = `<tr>
-                    <th>Item</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                </tr>`;
-            for(name of orderNames){
-                    console.log("focus");
-                    console.log(name);
+        // Initialize functions to handle actions
+        let items = JSON.parse(localStorage.getItem("items")) || [];
+        let orders = JSON.parse(localStorage.getItem("orders")) || {};
+        let reservations = JSON.parse(localStorage.getItem("reservations")) || {};
+    
+        // Function to render orders
+        function renderOrders() {
+            const orderListObj = document.getElementById("order-list");
+            orderListObj.innerHTML = `<tr><th>Item</th><th>Quantity</th><th>Price</th><th>Action</th></tr>`;
+            Object.keys(orders).forEach(name => {
                 orderListObj.innerHTML += `
-                                <tr>
-                                    <th>${name}</th>
-                                    <th>${orders[name].quantity}</th>
-                                    <th>Rs ${orders[name].price}</th>
-                                </tr>
-                                `;
+                    <tr>
+                        <td>${name}</td>
+                        <td>${orders[name].quantity}</td>
+                        <td>Rs ${orders[name].price * orders[name].quantity}</td>
+                        <td><button onclick="markAsDone('${name}')">Done</button></td>
+                    </tr>
+                `;
+            });
+        }
+
+        function markAsDone(name) {
+            if (confirm(`Are you sure you want to mark "${name}" as done and remove it?`)) {
+                delete reservations[name];  
+                localStorage.setItem("reservations", JSON.stringify(reservations));  
+                renderOrders();  
+                alert(`Order "${name}" has been successfully removed.`);
             }
+        }
+
 
     
-
-
-        
-        function placeItem(){
+        // Function to render reservations
+        function renderReservations() {
+            const resTable = document.getElementById("reservation-list");
+            resTable.innerHTML = `
+                <th>Name</th>
+                <th>Phone number</th>
+                <th>No. of persons</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Message</th>
+                <th>Action</th>
+            `;
+            Object.keys(reservations).forEach(name => {
+                resTable.innerHTML += `
+                    <tr>
+                        <td>${name}</td>
+                        <td>${reservations[name].phone}</td>
+                        <td>${reservations[name].person}</td>
+                        <td>${reservations[name].reservationDate}</td>
+                        <td>${reservations[name].time}</td>
+                        <td>${reservations[name].message}</td>
+                        <td><button onclick="markAsDone('${name}')">Done</button></td>
+                    </tr>
+                `;
+            });
+        }
+    
+        // Function to place a new item
+        document.getElementById("place-item").addEventListener("click", function placeItem() {
             const category = document.getElementById("category").value;
-
-            // const fileObj = document.getElementById('image');
-            // const targetObj = document.getElementById('preview');
-            // setObjImg(fileObj,targetObj);
-            
             const title = document.getElementById("title").value;
             const description = document.getElementById("description").value;
             const price = document.getElementById("price").value;
-
-            // console.log(category, title, description, price);
-
-            let item = {
-                category: "",
-                // imageObj: new Object(),
-                title: "",
-                description: "",
-                price: 0
-            }    
-            item.category = category
-            // item.imageObj = fileObj
-            item.title = title
-            item.description = description
-            item.price = price
-
-            items.push(item);
-            localStorage.setItem("items", JSON.stringify(items));
-            console.log(items);
-
-        }
-    // for reservations
-    var reservations;
-    var resTable = document.getElementById("reservation-list");
-    var resNames;
-
-
-        reservations = JSON.parse(localStorage.getItem("reservations"));
-        resNames = Object.keys(reservations);
-        console.log(reservations)
-
-        resTable.innerHTML = ` 
-                    <th>Name</th>
-                    <th>Phone number</th>
-                    <th>no. of persons</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Message</th>`;
-
-            for(name of resNames){
-                    console.log(name);
-                resTable.innerHTML += `
-                                <tr>
-                    <th>${name}</th>
-                    <th>${reservations[name].phone}</th>
-                    <th>${reservations[name].person}</th>
-                    <th>${reservations[name].reservationDate}</th>
-                
-                    <th>${reservations[name].time}</th>
-                    <th>${reservations[name].message}</th>
-                </tr>
-                                `;
+    
+            if (!title || !description || !price) {
+                alert("Please fill all fields!");
+                return;
             }
     
-
-
-    function toggleTheme() {
-        const body = document.body;
-        const currentTheme = body.getAttribute('data-theme');
-        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-        
+            const item = {
+                category: category,
+                title: title,
+                description: description,
+                price: price
+            };
+            items.push(item);
+            localStorage.setItem("items", JSON.stringify(items));
+            alert("Item placed successfully!");
+            document.getElementById("title").value = '';
+            document.getElementById("description").value = '';
+            document.getElementById("price").value = '';
+        });
+    
+        // Theme Toggle
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
             body.setAttribute('data-theme', newTheme);
-                
             localStorage.setItem('theme', newTheme);
-    }
-
-    function loadTheme() {
-        const savedTheme = localStorage.getItem('theme');
-            
-        if (savedTheme) {
-            document.body.setAttribute('data-theme', savedTheme);
+            showTooltip();
         }
-    }
-
-        
-    window.onload = function () {
-        loadTheme();
-        showTooltip();
-    };
-
-    function showTooltip() {
-        const tooltip = document.getElementById('tooltip');
-        tooltip.style.display = 'block';
-        setTimeout(() => {
-            tooltip.style.display = 'none';
+    
+        // Show Tooltip
+        function showTooltip() {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.style.display = 'block';
+            setTimeout(() => {
+                tooltip.style.display = 'none';
+            }, 1000);
+        }
+    
+        // Load Theme on Page Load
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.body.setAttribute('data-theme', savedTheme);
+            }
+        }
+    
+        // Call the render functions immediately to populate data on page load
+        renderOrders();
+        renderReservations();
+    
+        // Update every second
+        setInterval(() => {
+            // Fetch the latest data from localStorage and re-render
+            orders = JSON.parse(localStorage.getItem("orders")) || {};
+            reservations = JSON.parse(localStorage.getItem("reservations")) || {};
+            renderOrders();
+            renderReservations();
         }, 1000);
-    }
+    
+        window.onload = function () {
+            loadTheme();
+        };
     </script>
+    
 </body>
 </html>

@@ -425,7 +425,9 @@
               }, 500);
               c = 0;
             }
-
+            items = JSON.parse(localStorage.getItem("items"));
+         
+            showCategory('breakfast');
             window.onfocus = () => {
               items = JSON.parse(localStorage.getItem("items"));
          
