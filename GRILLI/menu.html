@@ -389,40 +389,48 @@
         </div>
 
         <script>
-            var toShowItems = [];
-            var orders = [];
-            console.log("menu");
-            items = JSON.parse(localStorage.getItem("items"));
-            console.log(items);
-
-            function ordered(i){
-              orders.push(i); 
-              // console.log('ordered' + JSON.stringify(i));
-              localStorage.setItem("orders", JSON.stringify(orders))
-            }
+            var items;
 
             function showCategory(category) {
+                let c;
                 menuItemObj = document.getElementById('menuItems')
                 menuItemObj.innerHTML = "<p>Loading " + category + "...</p>";
+                console.log(items);
                 setTimeout(() => {
+
                 if (items == null){
                   menuItemObj.innerHTML = "Empty T-T"
                   return
                 }
+                
+                  
 
                 menuItemObj.innerHTML = "";
                 for (i of items){
                   if (category == i.category){
-                    toShowItems.push(i);
+                    
+                    console.log(i);
                     menuItemObj.innerHTML += `
                             <div class="menu-item" data-name="${i.title}" data-price="${i.price}">
                                 <div><h3>${i.title}</h3><p>${i.description}</p></div>
                                 <span>${i.price}</span>
-                                <button class="order-button" onclick=ordered(${JSON.stringify(i)})>Order</button>
+                                <button class="order-button">Order</button>
                             </div>`;
+                    c++;
                   }
                 }
+                if(c == 0){
+                  menuItemObj.innerHTML = "Empty T-T"
+                }
               }, 500);
+              c = 0;
+            }
+
+            window.onfocus = () => {
+              items = JSON.parse(localStorage.getItem("items"));
+         
+              showCategory('breakfast');
+
               
             }
 
@@ -431,7 +439,7 @@
     </div>
 
     <script>
-        let cart = {};
+        var cart = {};
     
         function updateCart() {
             let cartDiv = document.getElementById('cart');
@@ -456,37 +464,7 @@
         function closePopup() {
             document.getElementById('popupOverlay').classList.remove('active');
         }
-    
-        // function showCategory(category) {
-        //     document.getElementById('menuItems').innerHTML = "<p>Loading " + category + "...</p>";
-        //     setTimeout(() => {
-        //         if (category === 'breakfast') {
-        //             document.getElementById('menuItems').innerHTML = `
-        //                 <div class="menu-item" data-name="Pancakes" data-price="15.00">
-        //                     <img src="pancakes.jpg" alt="Pancakes">
-        //                     <div><h3>Pancakes</h3><p>Fluffy pancakes with syrup</p></div>
-        //                     <span>$15.00</span>
-        //                     <button class="order-button">Order</button>
-        //                 </div>`;
-        //         } else if (category === 'appetizers') {
-        //             document.getElementById('menuItems').innerHTML = `
-        //                 <div class="menu-item" data-name="Bruschetta" data-price="12.00">
-        //                     <img src="bruschetta.jpg" alt="Bruschetta">
-        //                     <div><h3>Bruschetta</h3><p>Toasted bread with tomatoes</p></div>
-        //                     <span>$12.00</span>
-        //                     <button class="order-button">Order</button>
-        //                 </div>`;
-        //         } else if (category === 'drinks') {
-        //             document.getElementById('menuItems').innerHTML = `
-        //                 <div class="menu-item" data-name="Cocktail" data-price="10.00">
-        //                     <img src="cocktail.jpg" alt="Cocktail">
-        //                     <div><h3>Cocktail</h3><p>Refreshing fruit cocktail</p></div>
-        //                     <span>$10.00</span>
-        //                     <button class="order-button">Order</button>
-        //                 </div>`;
-        //         }
-        //     }, 300);
-        // }
+
  
         document.getElementById('menuItems').addEventListener('click', function (event) {
             if (event.target && event.target.classList.contains('order-button')) {
@@ -502,6 +480,9 @@
                 updateCart();
 
                 console.log(`${itemName} quantity: ${cart[itemName].quantity}`);
+
+                localStorage.setItem("orders", JSON.stringify(cart))
+
             }
         });
     
