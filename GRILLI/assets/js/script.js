@@ -177,9 +177,8 @@ document.getElementById("scroll-des").addEventListener("click", function() {
 // Reservation form
 var reservations = {};
 document.querySelector('.form-left').addEventListener('submit', function (event) {
-  event.preventDefault(); // Prevent the default form submission
+  event.preventDefault(); 
 
-  // Retrieve form data
   const formData = {
       name: document.querySelector('input[name="name"]').value,
       phone: document.querySelector('input[name="phone"]').value,
@@ -189,16 +188,12 @@ document.querySelector('.form-left').addEventListener('submit', function (event)
       message: document.querySelector('textarea[name="message"]').value,
   };
 
-  // Save reservation data to the reservations object
   reservations[formData.name] = formData;
 
-  // Log data (for debugging purposes)
   console.log('Form Data:', reservations);
 
-  // Store reservation in localStorage
   localStorage.setItem("reservations", JSON.stringify(reservations));
 
-  // Show a confirmation alert
   alert('Your table has been booked successfully!');
 
   document.querySelector('.form-left').reset();

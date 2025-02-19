@@ -192,7 +192,17 @@
             background-color: #a88f59;
         }
 
-      
+        .category-selector button {
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .category-selector button.active {
+            background-color: #a67c39;
+            font-weight: bold;
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
     </style>
 </head>
 <body>
@@ -345,10 +355,11 @@
         <h1>Delicious Menu</h1>
         <p class="section-subtitle text-center label-2">Special Selection</p>
         <div class="category-selector">
-            <button onclick="showCategory('breakfast')">Breakfast</button>
-            <button onclick="showCategory('appetizers')">Appetizers</button>
-            <button onclick="showCategory('drinks')">Drinks</button>
+          <button id="breakfastBtn" class="active" onclick="showCategory('breakfast')">Breakfast</button>
+          <button id="appetizersBtn" onclick="showCategory('appetizers')">Appetizers</button>
+          <button id="drinksBtn" onclick="showCategory('drinks')">Drinks</button>
         </div>
+      
 
         <div class="menu-container" id="menuItems">
 
@@ -422,6 +433,17 @@
                 if(c == 0){
                   menuItemObj.innerHTML = "Empty T-T"
                 }
+
+                const buttons = document.querySelectorAll('.category-selector button');
+                buttons.forEach(button => {
+                    button.classList.remove('active'); // Remove active class from all buttons
+                });
+                
+                
+                const activeButton = document.querySelector(`button[onclick="showCategory('${category}')"]`);
+                if (activeButton) {
+                    activeButton.classList.add('active');
+                }
               }, 500);
               c = 0;
             }
@@ -435,6 +457,11 @@
 
               
             }
+
+            document.addEventListener("DOMContentLoaded", function() {
+                showCategory('breakfast'); 
+                document.getElementById('breakfastBtn').classList.add('active');
+            });
 
         </script>
 
