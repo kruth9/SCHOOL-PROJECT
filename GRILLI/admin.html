@@ -264,13 +264,13 @@
                         <td>${name}</td>
                         <td>${orders[name].quantity}</td>
                         <td>Rs ${orders[name].price * orders[name].quantity}</td>
-                        <td><button onclick="markAsDone('${name}')">Done</button></td>
+                        <td><button onclick="markAsDoneOrder('${name}')">Done</button></td>
                     </tr>
                 `;
             });
         }
 
-        function markAsDone(name) {
+        function markAsDoneRes(name) {
             if (confirm(`Are you sure you want to mark "${name}" as done and remove it?`)) {
                 delete reservations[name];  
                 localStorage.setItem("reservations", JSON.stringify(reservations));  
@@ -278,7 +278,14 @@
                 alert(`Order "${name}" has been successfully removed.`);
             }
         }
-
+        function markAsDoneOrder(name) {
+            if (confirm(`Are you sure you want to mark "${name}" as done and remove it?`)) {
+                delete orders[name];  
+                localStorage.setItem("orders", JSON.stringify(orders));  
+                renderOrders();  
+                alert(`Order "${name}" has been successfully removed.`);
+            }
+        }
 
     
         // Function to render reservations
@@ -302,7 +309,7 @@
                         <td>${reservations[name].reservationDate}</td>
                         <td>${reservations[name].time}</td>
                         <td>${reservations[name].message}</td>
-                        <td><button onclick="markAsDone('${name}')">Done</button></td>
+                        <td><button onclick="markAsDoneRes('${name}')">Done</button></td>
                     </tr>
                 `;
             });
