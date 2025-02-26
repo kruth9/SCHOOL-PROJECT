@@ -286,12 +286,16 @@
     </div>
     <script>
         // Initialize functions to handle actions
+        
+
         let items = JSON.parse(localStorage.getItem("items")) || [];
         let orders = JSON.parse(localStorage.getItem("orders")) || {};
         let reservations = JSON.parse(localStorage.getItem("reservations")) || {};
+
     
         // Function to render orders
         function renderOrders() {
+      
             const orderListObj = document.getElementById("order-list");
             orderListObj.innerHTML = `<tr><th>Item</th><th>Quantity</th><th>Price</th><th>Action</th></tr>`;
             Object.keys(orders).forEach(name => {
@@ -307,21 +311,21 @@
         }
 
         function markAsDoneRes(name) {
-            if (confirm(`Are you sure you want to mark "${name}" as done and remove it?`)) {
+            // if (confirm(`Are you sure you want to mark "${name}" as done and remove it?`)) {
                 delete reservations[name];  
                 localStorage.setItem("reservations", JSON.stringify(reservations));  
                 renderOrders();  
                 alert(`Order "${name}" has been successfully removed.`);
-            }
+            // }
         }
 
         function markAsDoneOrder(name) {
-            if (confirm(`Are you sure you want to mark "${name}" as done and remove it?`)) {
+            // if (confirm(`Are you sure you want to mark "${name}" as done and remove it?`)) {
                 delete orders[name];  
                 localStorage.setItem("orders", JSON.stringify(orders));  
                 renderOrders();  
                 alert(`Order "${name}" has been successfully removed.`);
-            }
+            // }
         }
 
     
@@ -394,6 +398,7 @@
             document.getElementById("title").value = '';
             document.getElementById("description").value = '';
             document.getElementById("price").value = '';
+            console.log(items);
         });
     
         // Theme Toggle

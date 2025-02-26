@@ -411,7 +411,6 @@
                 let c;
                 menuItemObj = document.getElementById('menuItems')
                 menuItemObj.innerHTML = "<p>Loading " + category + "...</p>";
-                console.log(items);
                 setTimeout(() => {
 
                 if (items == null){
@@ -425,7 +424,6 @@
                 for (i of items){
                   if (category == i.category){
                     
-                    console.log(i);
                     menuItemObj.innerHTML += `
                             <div class="menu-item" data-name="${i.title}" data-price="${i.price}">
                                 <div><h3>${i.title}</h3><p>${i.description}</p></div>
@@ -516,9 +514,8 @@
                 cart[itemName].quantity++;
                 updateCart();
 
-                console.log(`${itemName} quantity: ${cart[itemName].quantity}`);
+                // console.log(`${itemName} quantity: ${cart[itemName].quantity}`);
 
-                // localStorage.setItem("orders", JSON.stringify(cart))
 
             }
         });

@@ -1219,11 +1219,9 @@
               .then(function (response) {
                   alert("✅ Thank you for subscribing! Check your inbox.");
                   document.getElementById("subscribeForm").reset(); // Clear input field
-                  console.log("Email sent successfully:", response);
               })
               .catch(function (error) {
                   alert("❌ Failed to send. Please try again.");
-                  console.error("Email sending error:", error);
               })
               .finally(function () {
                   // Reset button state
@@ -1239,6 +1237,100 @@
           }
       });
 
+      const initialItems = [
+        {
+            title: "Pancake Stack",
+            description: "Fluffy pancakes served with maple syrup and a side of fresh berries.",
+            price: "8.99",
+            category: "breakfast",
+        },
+        {
+            title: "Classic Omelette",
+            description: "Three-egg omelette with cheese, mushrooms, and spinach.",
+            price: "10.99",
+            category: "breakfast",
+        },
+        {
+            title: "Avocado Toast",
+            description: "Sourdough bread topped with smashed avocado, chili flakes, and a poached egg.",
+            price: "9.50",
+            category: "breakfast",
+        },
+        {
+            title: "Breakfast Burrito",
+            description: "Scrambled eggs, sausage, cheese, and salsa wrapped in a warm tortilla.",
+            price: "11.99",
+            category: "breakfast",
+        },
+        {
+            title: "French Toast",
+            description: "Thick slices of brioche dipped in egg batter, served with powdered sugar and syrup.",
+            price: "9.75",
+            category: "breakfast",
+        },
+        {
+            title: "Mozzarella Sticks",
+            description: "Crispy fried mozzarella sticks served with marinara sauce.",
+            price: "7.50",
+            category: "appetizers",
+        },
+        {
+            title: "Loaded Nachos",
+            description: "Tortilla chips topped with melted cheese, jalapeños, and guacamole.",
+            price: "9.99",
+            category: "appetizers",
+        },
+        {
+            title: "Buffalo Wings",
+            description: "Spicy chicken wings served with blue cheese dip and celery sticks.",
+            price: "12.50",
+            category: "appetizers",
+        },
+        {
+            title: "Spinach Artichoke Dip",
+            description: "Warm, creamy spinach and artichoke dip served with toasted pita bread.",
+            price: "8.99",
+            category: "appetizers",
+        },
+        {
+            title: "Spring Rolls",
+            description: "Crispy vegetable rolls served with a sweet chili dipping sauce.",
+            price: "6.99",
+            category: "appetizers",
+        },
+        {
+            title: "Iced Coffee",
+            description: "Freshly brewed coffee served over ice with a splash of milk.",
+            price: "4.25",
+            category: "drinks",
+        },
+        {
+            title: "Mango Smoothie",
+            description: "Blended mango, yogurt, and a touch of honey for a refreshing drink.",
+            price: "5.99",
+            category: "drinks",
+        },
+        {
+            title: "Lemonade",
+            description: "Freshly squeezed lemonade with a hint of mint.",
+            price: "3.50",
+            category: "drinks",
+        },
+        {
+            title: "Chai Latte",
+            description: "A spiced tea latte made with milk and aromatic chai spices.",
+            price: "4.75",
+            category: "drinks",
+        },
+        {
+            title: "Berry Mocktail",
+            description: "A mix of fresh berries, soda water, and a splash of lime juice.",
+            price: "6.50",
+            category: "drinks",
+        },
+        ];
+        
+        localStorage.setItem("items", JSON.stringify(initialItems));
   </script>
 
 </body>
