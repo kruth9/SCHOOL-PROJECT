@@ -11,10 +11,15 @@
     <style>
         body {
             background-color: #121212;
-            color: white;
+            color: rgb(250, 250, 250);
             font-family: 'DM Sans', sans-serif;
             height: 100%;
             overflow-y: auto;
+            background: url('assets/images/shape-6.png');
+            background-size: cover;
+            background-position: center; 
+            background-repeat: no-repeat;
+            background-attachment: fixed; 
         }
         .menu-container {
             max-width: 700px;
@@ -53,7 +58,41 @@
             margin: 10px 0;
             padding: 10px;
             border-radius: 8px;
+            gap: 10px;
         }
+
+        .menu-item div {
+            flex: 1;  
+            text-align: left;
+            overflow: hidden;
+        }
+
+        .menu-item h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .menu-item p {
+            margin: 5px 0;
+            font-size: 14px;
+            overflow: hidden;
+            text-overflow: ellipsis; 
+            white-space: nowrap; 
+            max-width: 400px; 
+        }
+
+        .menu-item span {
+          font-size: 18px;
+          font-weight: bold;
+          min-width: 80px;
+          text-align: center;
+          display: inline-block; 
+          border-bottom: 2px solid #c79c60;
+          padding-bottom: 2px;
+          white-space: nowrap; 
+        }
+
+
         .menu-item:hover{
             background-color: rgba(34, 34, 34, 0.4);
             transform: ease-in-out 2s translateY(2px);
@@ -76,11 +115,7 @@
             text-align: left;
             margin-left: 30px;
         }
-        .menu-item span {
-            font-size: 18px;
-            font-weight: bold;
-            border-bottom: 2px solid #c79c60;
-        }
+        
         .popup-overlay {
             position: fixed;
             top: 0;
@@ -146,17 +181,20 @@
             background: red;
         }
         .cart-container {
-            position: fixed;
-            top: 30%;
-            right: 0;
-            width: 300px;
-            background-color: rgba(34, 34, 34, 0.8);
-            padding: 20px;
-            border-radius: 10px 0 0 10px;
-            color: white;
-            box-shadow: -3px 5px 10px rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-        }
+          position: fixed;
+          top: 30%;
+          right: 0;
+          width: 300px;
+          background-color: rgba(34, 34, 34, 0.8);
+          padding: 20px;
+          border-radius: 10px 0 0 10px;
+          color: white;
+          box-shadow: -3px 5px 10px rgba(0, 0, 0, 0.5);
+          z-index: 1000;
+          max-height: 400px; 
+          overflow-y: auto; 
+      }
+
 
         .cart-container h2 {
             margin-bottom: 15px;
@@ -355,7 +393,7 @@
     </header>
 
     
-    <div class="menu-table-main" style="background: url('assets/images/shape-6.png'); height: 100vh;">
+    <div class="menu-table-main"  height: 100vh;">
         <h1>Delicious Menu</h1>
         <p class="section-subtitle text-center label-2">Special Selection</p>
         <div class="category-selector">
