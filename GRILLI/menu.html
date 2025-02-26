@@ -455,10 +455,7 @@
             showCategory('breakfast');
             window.onfocus = () => {
               items = JSON.parse(localStorage.getItem("items"));
-         
               showCategory('breakfast');
-
-              
             }
 
             document.addEventListener("DOMContentLoaded", function() {
@@ -492,7 +489,6 @@
     
         function openPopup() {
             document.getElementById('popupOverlay').classList.add('active');
-            
                 localStorage.setItem("orders", JSON.stringify(cart))
         }
     

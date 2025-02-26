@@ -311,21 +311,17 @@
         }
 
         function markAsDoneRes(name) {
-            // if (confirm(`Are you sure you want to mark "${name}" as done and remove it?`)) {
                 delete reservations[name];  
                 localStorage.setItem("reservations", JSON.stringify(reservations));  
                 renderOrders();  
                 alert(`Order "${name}" has been successfully removed.`);
-            // }
         }
 
         function markAsDoneOrder(name) {
-            // if (confirm(`Are you sure you want to mark "${name}" as done and remove it?`)) {
                 delete orders[name];  
                 localStorage.setItem("orders", JSON.stringify(orders));  
                 renderOrders();  
                 alert(`Order "${name}" has been successfully removed.`);
-            // }
         }
 
     
