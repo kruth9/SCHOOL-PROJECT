@@ -180,6 +180,9 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            margin: 20px auto;
+            text-align: center;
+            display: block;
         }
         .close-btn {
             margin-top: 10px;
@@ -532,12 +535,19 @@
         }
     
         function openPopup() {
-            document.getElementById('popupOverlay').classList.add('active');
-                localStorage.setItem("orders", JSON.stringify(cart))
+          if (Object.keys(cart).length === 0) {
+              alert("Cart is empty! Please add items before placing an order.");
+              return;
+          }
+          document.getElementById('popupOverlay').classList.add('active');
+          localStorage.setItem("orders", JSON.stringify(cart));
+
         }
     
         function closePopup() {
             document.getElementById('popupOverlay').classList.remove('active');
+            cart = {};
+            updateCart();
         }
 
  
