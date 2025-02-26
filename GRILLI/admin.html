@@ -76,19 +76,40 @@
         }
         .admin-container {
             display: flex;
+            flex-direction: row; 
             justify-content: space-between;
-            padding: 20px;
             align-items: flex-start;
-            flex-wrap: wrap;
-            gap: 30px;
+            gap: 20px;
+            width: 100%;
+            max-width: 1400px;
+            margin: 20px auto;
         }
-        .left-panel, .right-panel{
+
+        .left-panel, .right-panel {
             background: var(--panel-bg);
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             min-height: 55vh;
+            flex: 1; 
+            max-width: 48%; 
         }
+
+
+        @media (max-width: 900px) {
+            .admin-container {
+                flex-direction: column;
+            }
+            .left-panel, .right-panel {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+        /* tesed debig for border */
+        /* .admin-container, .left-panel, .right-panel {
+            border: 1px solid red; 
+        } */
+
         .left-panel{ width: 40%;}
         .right-panel { width: 45%;}
         .reservation-panel{
@@ -96,7 +117,9 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 100%;
+            width: 90%;
+            max-width: 1200px; 
+            margin: 20px auto;
         }
         h2 {
             margin-bottom: 15px;
@@ -197,6 +220,12 @@
         td button:hover {
             background: var(--button-hover);
         }
+        .error-message {
+            color: red;
+            font-size: 12px;
+            margin-top: 3px;
+            display: block;
+        }
 
     </style>
 </head>
@@ -218,10 +247,15 @@
             </select>
             <label for="title">Title:</label>
             <input type="text" id="title" placeholder="Enter title">
+            <span class="error-message" id="title-error"></span>
+
             <label for="description">Description:</label>
             <textarea id="description" placeholder="Enter description"></textarea>
+            <span class="error-message" id="description-error"></span>
+
             <label for="price">Price ($):</label>
             <input type="number" id="price" placeholder="Enter price">
+            <span class="error-message" id="price-error"></span>
             <button id="place-item">Place Item</button>
         </div>
         <div class="right-panel">
@@ -234,6 +268,8 @@
                 </tr>
             </table>
         </div>
+        </div>
+        
         <div class="reservation-panel">
             <h2>Reservations</h2>
             <table id="reservation-list">
@@ -323,10 +359,28 @@
             const description = document.getElementById("description").value;
             const price = document.getElementById("price").value;
     
-            if (!title || !description || !price) {
-                alert("Please fill all fields!");
-                return;
+            document.getElementById("title-error").textContent = "";
+            document.getElementById("description-error").textContent = "";
+            document.getElementById("price-error").textContent = "";
+
+            let isValid = true;
+
+            if (!title) {
+                document.getElementById("title-error").textContent = "Title is required!";
+                isValid = false;
             }
+
+            if (!description) {
+                document.getElementById("description-error").textContent = "Description is required!";
+                isValid = false;
+            }
+
+            if (!price) {
+                document.getElementById("price-error").textContent = "Price is required!";
+                isValid = false;
+            }
+
+            if (!isValid) return;
     
             const item = {
                 category: category,
